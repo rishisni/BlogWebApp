@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                   
+                    <h2 class="card-title text-center mb-4">Owner Actions</h2>
+                    <ul class="list-group">
+                        {% if user.is_owner %}
+                        <li class="list-group-item">
+                            <a href="{% url 'user_list' %}" class="text-decoration-none">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="badge custom-badge">Promote User</span>
+                                    <span class="btn-custom-outline">Go <i class="fas fa-arrow-right"></i></span>
+                                </div>
+                            </a>
+                        </li>
+                        {% endif %}
+                        <li class="list-group-item">
+                            <a href="{% url 'post-to-approve-list' %}" class="text-decoration-none">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="badge custom-badge">Approve Posts</span>
+                                    <span class="btn-custom-outline">Go <i class="fas fa-arrow-right"></i></span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="{% url 'create-category' %}" class="text-decoration-none">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="badge custom-badge">श्रेणी बनाएं</span>
+                                    <span class="btn-custom-outline">Go<i class="fas fa-arrow-right"></i></span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="{% url 'add_competition' %}" class="text-decoration-none">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="badge custom-badge">प्रतियोगिता जोड़ें</span>
+                                    <span class="btn-custom-outline">Go<i class="fas fa-arrow-right"></i></span>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

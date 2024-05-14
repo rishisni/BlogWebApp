@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container border rounded bg-white py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <img src="{{ competition.image.url }}" class="img-fluid py-4  mb-4" alt="Competition Image" ">
+            <h1 class=" text-center">{{ competition.title }}</h1>
+            <div class="poetry-content">
+                <pre class="card-text ">{{ competition.description }}</pre>
+            </div>
+            <p><strong>Start Date:</strong> {{ competition.start_date }}</p>
+            <p><strong>End Date:</strong> {{ competition.end_date }}</p>
+            <h3>नियम </h3>
+
+            <div class="poetry-content">
+                <pre class="card-text ">{{ competition.rules }}</pre>
+            </div>
+            <a class="btn-custom-outline btn-lg btn-block"
+                href="{% url 'submit_entry' competition_id=competition.id %}">भाग लें</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

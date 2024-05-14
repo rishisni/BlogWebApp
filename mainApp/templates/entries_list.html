@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            
+                <div class="card-body">
+                    <h2 >प्रतियोगिता पोस्ट -{{competition.title}}</h2>
+                    <ul class="list-group list-group-flush">
+                        {% for entry in entries %}
+                        {% include 'partials/competition_post.html' %}
+
+                        {% empty %}
+                        <li class="list-group-item">कोई प्रतियोगिता पोस्ट नहीं मिली</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            
+        </div>
+    </div>
+</div>
+{% endblock %}

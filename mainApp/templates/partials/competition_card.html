@@ -1,0 +1,29 @@
+<div class="card mb-3">
+    <img src="{{ competition.image.url }}" class="card-img-top img-fluid" alt="{{ competition.title }}"
+        style="max-height: 200px;">
+    <div class="card-body">
+        <h5 class="card-title">{{ competition.title }}</h5>
+        <p class="card-text">{{ competition.description|truncatechars:60 }}</p>
+        <div class="row">
+            <div class="col">
+                <p class="card-text"><strong>Start Date:</strong> {{ competition.start_date }}</p>
+            </div>
+            <div class="col">
+                <p class="card-text"><strong>End Date:</strong> {{ competition.end_date }}</p>
+            </div>
+        </div>
+        <div class="row mt-4 mt-sm-0 mb-4 mt-2">
+            <div class="col-sm-12 category-info fixed-bottom justify-content-between d-flex"><a class="card-link"
+                    href="{% url 'competition_detail' competition_id=competition.id %}">
+                    <p class="read-more">
+                        और जाने &nbsp;<i class="far fa-hand-point-right"></i>
+                    </p>
+                    <a href="{% url 'submitted_entries_list' competition.id %}" class="btn btn-custom-outline">प्रतियोगिता पोस्ट</a>
+
+                </a>
+            </div>
+        </div>
+
+
+    </div>
+</div>

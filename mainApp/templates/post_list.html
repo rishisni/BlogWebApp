@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h2>पोस्ट सूची</h2>
+    {% if posts %}
+        <ul>
+            {% for post in posts %}
+                {% include 'partials/post_details.html' %}
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>कोई पोस्ट नहीं हैं।</p>
+    {% endif %}
+
+{% endblock %}

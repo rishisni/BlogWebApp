@@ -1,0 +1,84 @@
+<div class="card bg-card-image mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card-body">
+                <!-- Author Info Section -->
+                <div class="d-flex author-info justify-content-between align-items-center">
+                    <div class="profile-pic mr-3">
+                        <img src="{% if post.created_by.profile.profile_image %}{{ post.created_by.profile.profile_image.url }}{% else %}/media/profile_images/default.png{% endif %}"
+                            alt="Profile Image" class="profile-image img-fluid rounded-circle">
+                    </div>
+                    <div>
+                        <p class="card-text mb-0 mr-2">
+                            {{ post.created_by }}
+                        </p>
+                    </div>
+                    <div>
+                        {% if request.user.is_authenticated and request.user != post.created_by %}
+                        {% if not post.created_by in request.user.following.all %}
+                        <form method="POST" action="{% url 'follow_user' post.created_by.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary">Follow</button>
+                            <input type="hidden" name="next" value="{{ request.path }}">
+                        </form>
+                        {% else %}
+
+                        <form method="POST" action="{% url 'unfollow_user' post.created_by.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Unfollow</button>
+                            <input type="hidden" name="next" value="{{ request.path }}">
+                        </form>
+                        {% endif %}
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <p class="card-text mb-0">
+                            {{ post.created_at|date:"d F, Y" }}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Post Title -->
+                <div>
+                    <h5 class="card-title">
+                        <strong>{{ post.title }}</strong>
+                    </h5>
+                </div>
+
+                <!-- Post Description -->
+                <div>
+                    <p class="card-text text-center">
+                    <pre class="card-text text-center">{{ post.description|truncatechars:60 }}</pre>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Bottom Row: Like, Share, Read More -->
+            <div class="row mt-4 mt-sm-0">
+                <div class="col-md-12 category-info d-flex justify-content-between align-items-center">
+                    <p class="badge text-black">
+                        <i class="far fa-heart"></i>&nbsp; {{ post.likes_count }}
+                    </p>
+                    <p class="badge text-black">
+                        <i class="fa fa-solid fa-star fa-xs"></i>
+                    </p>
+                    <a href="{% url 'category-posts' post.category.id %}" style="text-decoration:none;" class="mb-4">
+                        <p class="badge custom-badge"
+                            style="font-family: 'Biryani', sans-serif; font-size: 14px; font-weight:normal;">
+                            {{ post.category.name_hi }}
+                        </p>
+                    </a>
+                    <p class="badge text-black">
+                        <i class="fa fa-solid fa-star fa-xs"></i>
+                    </p>
+                    <a href="{% url 'full_post' post.id %}" class="card-link">
+                        <p class="read-more">
+                            और पढ़ें &nbsp;<i class="far fa-hand-point-right"></i>
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

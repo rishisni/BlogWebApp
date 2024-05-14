@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="vh-100 mb-4 mt-4">
+    <div class="container h-100">
+        <div class="row justify-content-center align-items-center h-100">
+            <div class="col-lg-10">
+                <div class="card text-dark bg-light shadow-lg rounded">
+                    <div class="card-body p-md-5">
+                        <div class="row justify-content-center">
+                            <div class="col-md-10">
+                                <h2 class="text-center fw-bold mb-5">अपनी रचना लिखें</h2>
+                                <form class="mx-4" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+
+                                    <div class="mb-4">
+                                        <label for="title" class="form-label" >Post Title</label>
+                                        <br>
+                                        {{ form.post_title }}
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label for="category" class="form-label">Category</label>
+                                        <br>
+                                        {{ form.category }}
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label for="editor" class="form-label">Post Description</label>
+                                        <br>
+                                        {{ form.post_description }}
+                                    </div>
+
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-custom-outline btn-lg">Create</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+{% endblock %}
+
+
+
+

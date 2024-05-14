@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>अनुमोदन(Approval) की आवश्यकता वाले पोस्ट</h2>
+{% if posts_to_approve %}
+<ul>
+    {% for post in posts_to_approve %}
+    {% include 'partials/post_details.html' %}
+    {% endfor %}
+</ul>
+{% else %}
+<p class="card-text text-center " >कोई पोस्ट नहीं मिली</p>
+
+
+{% endif %}
+
+{% endblock %}

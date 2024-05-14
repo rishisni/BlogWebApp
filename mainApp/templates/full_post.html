@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h2 class="card-title text-center" style="color: brown;">{{ post.title }}</h2>
+                    <div class="author-info d-flex align-items-center justify-content-between mb-3">
+                        <div class="profile-pic">
+                            <img src="{% if post.created_by.profile.profile_image %}{{ post.created_by.profile.profile_image.url }}{% else %}/media/profile_images/default.png{% endif %}"
+                                alt="Profile Image" class="profile-image img-fluid rounded-circle">
+
+                        </div>
+                        <p class="card-text mb-0"><strong>{{ post.created_by }}</strong></p>
+                        <div class="author-details">
+
+                            <p class="card-text mb-0">{{ post.created_at|date:"d F, Y" }}</p>
+                        </div>
+                    </div>
+                    <hr style="border-color: brown;">
+                    <div class="poetry-content">
+                        <pre class="card-text text-center full-desc">{{ post.description }}</pre>
+                    </div>
+                    <div class="d-flex justify-content-center mt-4">
+                        <a href="{% url 'category-posts' post.category.id %}" style="text-decoration:none;" class="mb-4 align-items-center">
+                            <p class="badge-lg custom-badge align-items-center text-center"
+                                style="font-family: 'Biryani', sans-serif; font-size: 14px; font-weight:normal;">
+                                {{ post.category.name_hi }}
+                            </p>
+                        </a>
+                    </div>
+                    
+                </div>
+
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                    <form action="{% url 'like_post' post.id %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-custom-outline btn">
+                            {% if liked %}
+                            <i class="fa fa-heart text-danger"></i>
+                            {% else %}
+                            <i class="fa fa-heart"></i>
+                            {% endif %}
+                            {{ like_count }}
+                        </button>
+                    </form>
+                    
+                    {% if post.created_by == request.user or request.user.is_owner %}
+                    <div>
+                        <a class="btn-custom-outline" href="{% url 'delete-post' post.id %}">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </div>
+                    {% endif %}
+
+                    {% if post.created_by == request.user %}
+                    <a href="{% url 'edit-post' post.id %}" class="btn-custom-outline">
+                        <i class="far fa-edit"></i>
+                    </a>
+                    {% endif %}
+                    {% if not post.approved and user.is_owner or user.is_admin %}
+                    <form method="POST" action="{% url 'approve_post' post.id %}" >
+                        {% csrf_token %}
+                        <button type="submit" name="action" value="approve" class="btn btn-custom-outline"><i class="fas fa-check"></i></button>
+                        
+                    </form>
+                    <form method="POST" action="{% url 'decline_post' post.id %}" >
+                        {% csrf_token %}
+                        <button type="submit" name="action" value="decline" class="btn btn-custom-outline"><i class="fas fa-times"></i></button>
+                        
+                    </form>
+                    
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mt-4">
+        <div class="col-lg-10">
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h3 class="section-title">कमेंट करे</h3>
+                    <form action="{% url 'add_comment' post.id %}" method="post" class="comment-form">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <textarea name="text" class="form-control form-control-sm" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-custom-outline ">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row justify-content-center mt-4">
+        <div class="col-lg-10">
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h3 style="font-size:18; margin-left: 20px;">अन्य लेखकों की टिप्पणियाँ</h3>
+                    <div class="container mt-4">
+                        {% for comment in comments %}
+                        <div>
+                            <div class="card-body">
+                                <div class="author-info d-flex align-items-center justify-content-between">
+                                    <div class="profile-pic">
+                                        <img src="{% if comment.user.profile.profile_image %}{{ comment.user.profile.profile_image.url }}{% else %}/media/profile_images/default.png{% endif %}"
+                                            alt="Profile Image" class="profile-image img-fluid rounded-circle">
+                                    </div>
+                                    <p class="card-text mb-0">{{ comment.user.username }}</p>
+                                    <div class="author-details">
+
+                                        <p class="card-text mb-0">{{ post.created_at|date:"d F, Y" }}</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="card-text mr-2">{{ comment.text }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <p class="no-comments-msg">अब तक कोई टिप्पणी नहीं।</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

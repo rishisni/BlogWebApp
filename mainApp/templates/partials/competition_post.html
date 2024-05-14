@@ -1,0 +1,62 @@
+<div class="card bg-card-image mt-4">
+    <div class="row">
+
+        <!-- Left Column: Profile Picture, Author Name, Date -->
+        <div class="col-md-12">
+
+            <div class="card-body">
+
+                <!-- Author Info Section -->
+                <div class="author-info justify-content-between d-flex align-items-center">
+                    <div class="profile-pic mr-3">
+                        <img src="{% if entry.user.profile.profile_image %}{{ entry.user.profile.profile_image.url }}{% else %}/media/profile_images/default.png{% endif %}"
+                            alt="Profile Image" class="profile-image img-fluid rounded-circle">
+                            
+                        </div>
+                        <p class="card-text mb-0">
+                            {{ entry.user.username }}
+                        </p>
+                    <div>
+                        
+                        <p class="card-text mb-0">
+                            {{ entry.created_at|date:"d F, Y" }}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Post Title -->
+                <div>
+                    <h5 class="card-title">
+                        <strong>{{ entry.post_title }}</strong>
+                    </h5>
+                </div>
+
+                <!-- Post Description -->
+                <div>
+                    <p class="card-text text-center">
+                        <pre class="card-text text-center">{{ entry.post_description }}</pre>
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Bottom Row: Like, Share, Read More -->
+            <div class="row mt-4 mt-sm-0">
+                <div class="col-md-12 category-info d-flex justify-content-between align-items-center">
+                    
+                    <p class="badge text-black">
+                        <i class="fa fa-solid fa-star fa-xs"></i>
+                    </p>
+                    <p class="badge custom-badge" style="font-family: 'Biryani', sans-serif; font-size: 14px; font-weight:normal;">
+                        {{ entry.category }}
+                    </p>
+                    <p class="badge text-black">
+                        <i class="fa fa-solid fa-star fa-xs"></i>
+                    </p>
+                    
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

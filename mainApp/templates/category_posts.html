@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>{{ category.name_hi }}</h2>
+
+{% for post in posts %}
+{% include 'partials/post_details.html' %}
+{% empty %}
+<p>इस श्रेणी में कोई पोस्ट नहीं मिली।</p>
+{% endfor %}
+
+{% endblock %}
