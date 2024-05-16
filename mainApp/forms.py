@@ -5,10 +5,11 @@ from .models import *
 
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(max_length=254, help_text='Enter your email')
-    
+    phone_no = forms.CharField(max_length=15, help_text='Enter your phone number')
+
     class Meta:
         model = CustomUser
-        fields = ('username', 'email', 'password')
+        fields = ('username', 'email', 'phone_no', 'password1', 'password2')
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
@@ -22,7 +23,11 @@ class SignUpForm(UserCreationForm):
             raise forms.ValidationError("A user with that username already exists.")
         return username
 
-
+    def clean_phone_no(self):
+        phone_no = self.cleaned_data.get('phone_no')
+        if CustomUser.objects.filter(phone_no=phone_no).exists():
+            raise forms.ValidationError("A user with that phone number already exists.")
+        return phone_no
 
 class ProfileForm(forms.ModelForm):
     class Meta:
@@ -43,12 +48,17 @@ class CategoryForm(forms.ModelForm):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'description', 'category']        
+        fields = ['title', 'description', 'category']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter post title'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter post description'}),
+            'category': forms.Select(attrs={'class': 'form-control'}),
+        }
 
     def __init__(self, *args, **kwargs):
         super(PostForm, self).__init__(*args, **kwargs)
-        categories = [(category.id, f"{category.name_hi}") for category in Category.objects.all()]
-        self.fields['category'].choices = categories
+        self.fields['category'].choices = [(category.id, f"{category.name_hi}") for category in Category.objects.all()]
+
 
 class CommentForm(forms.ModelForm):
     class Meta:
@@ -81,3 +91,9 @@ class CompetitionForm(forms.ModelForm):
             'end_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
         }
 
+
+
+class CarouselItemForm(forms.ModelForm):
+    class Meta:
+        model = CarouselItem
+        fields = ['image', 'url']

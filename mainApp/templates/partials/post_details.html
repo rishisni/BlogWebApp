@@ -10,27 +10,11 @@
                     </div>
                     <div>
                         <p class="card-text mb-0 mr-2">
-                            {{ post.created_by }}
+                            <a href="{% url 'view_user_profile' username=post.created_by.username %}">{{ post.created_by.username }}</a>
                         </p>
+                        
                     </div>
-                    <div>
-                        {% if request.user.is_authenticated and request.user != post.created_by %}
-                        {% if not post.created_by in request.user.following.all %}
-                        <form method="POST" action="{% url 'follow_user' post.created_by.id %}">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-primary">Follow</button>
-                            <input type="hidden" name="next" value="{{ request.path }}">
-                        </form>
-                        {% else %}
-
-                        <form method="POST" action="{% url 'unfollow_user' post.created_by.id %}">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-danger">Unfollow</button>
-                            <input type="hidden" name="next" value="{{ request.path }}">
-                        </form>
-                        {% endif %}
-                        {% endif %}
-                    </div>
+                   
 
                     <div>
                         <p class="card-text mb-0">

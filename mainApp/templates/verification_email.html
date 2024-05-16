@@ -1,23 +1,97 @@
-<!-- verification_email.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Email Verification</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* CSS styles for email content */
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #007bff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .btn-custom-outline {
+    margin-left: 10px;
+    margin-bottom: 10px;
+    display: inline-block;
+    padding: 4px 8px;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    border: 2px solid #00a8e9;
+    color: #00a8e9;
+    background-color: transparent;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    cursor: pointer;
+  }
+  
+  /* Button Hover Styles */
+  .btn-custom-outline:hover {
+    background-color: #00a8e9;
+    color: #fff;
+  }
+  
+  /* Button Active/Pressed Styles */
+  .btn-custom-outline:active {
+    transform: translateY(1px);
+  }
+  
+  /* Button Focus Styles (Optional) */
+  .btn-custom-outline:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px #00a8e9;
+  }
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            color: #666;
+        }
+        .logo {
+            display: block;
+            margin: 0 auto 20px;
+            width: 100px;
+        }
+        .about-section {
+            padding: 20px;
+            background-color: #f3f3f3;
+            border-radius: 8px;
+            margin-top: 40px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Dear {{ user.username }},</h2>
-        <p>Thank you for registering with us. To complete your registration, please click the button below to verify your email address:</p>
-        <p><a href="{{ verification_link }}" class="btn">Verify Email</a></p>
-        <p>Once verified, you will be able to access all features of our platform.</p>
+        <p class="text-center">Thank you for registering with us. To complete your registration, please click the button below to verify your email address:</p>
+        <div class="text-center">
+            <a href="{{ verification_link }}" class="btn btn-custom-outline">Verify Email</a>
+        </div>
+        <p class="mt-4">Once verified, you will be able to access all features of our platform.</p>
         <p>If you did not request this registration, please disregard this email.</p>
-        <p class="footer">Regards,<br>Team Social Django</p>
+        <p class="footer">Regards,<br>TheSoulTalk</p>
+        
+        <div class="about-section">
+            <h3 class="text-center mb-3">About The Soul Talk</h3>
+            <p>The Soul Talk is a literary platform founded by Ashish Dwivedi, an Author and Literature enthusiast, in 2018. Over the past 5 years, we've organized 500+ events across India, both online and offline, connecting over 20,000 creators from 50+ cities.</p>
+            <p>Our vision is to promote art and literature through various initiatives such as poetry competitions, events, and celebrating the works of legendary poets. We aim to provide a platform for every individual who wishes to express themselves through writing.</p>
+            <p>If you are a writer seeking a platform or support, we are here to help you on your creative journey.</p>
+        </div>
     </div>
 </body>
 </html>

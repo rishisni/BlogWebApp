@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'social_django',
     'mainApp',
     
+    
 
 ]
 
@@ -54,6 +55,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
+    'mainApp.middleware.CheckPasswordMiddleware',
+
 ]
 
 ROOT_URLCONF = 'myproject.urls'
@@ -124,13 +127,16 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGES = [
+    ('en', 'English'),
+    ('hi', 'Hindi'),
+]
 
-TIME_ZONE = 'UTC'
-
+LANGUAGE_CODE = 'hi'
 USE_I18N = True
-
+USE_L10N = True
 USE_TZ = True
+
 
 
 # Static files (CSS, JavaScript, Images)
@@ -150,28 +156,30 @@ AUTHENTICATION_BACKENDS = (
     
 
     'django.contrib.auth.backends.ModelBackend',
+    'mainApp.backends.CustomAuthBackend',  
 )
 
 LOGIN_URL = 'login'
 LOGOUT_URL = 'index'
-LOGIN_REDIRECT_URL = 'profile'
+LOGIN_REDIRECT_URL = 'index'
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '257369608807-ccqp25vla9h31lj55ta5m6vu0t9a1aik.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
 
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 
 SOCIAL_AUTH_FACEBOOK_KEY = os.environ.get('SOCIAL_AUTH_FACEBOOK_KEY')
 SOCIAL_AUTH_FACEBOOK_SECRET = os.environ.get('SOCIAL_AUTH_FACEBOOK_SECRET')
-
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com' 
 EMAIL_PORT = 587  
 EMAIL_USE_TLS = True  
-EMAIL_HOST_USER =  'rishabhkirodiwal04@gmail.com'
-EMAIL_HOST_PASSWORD = 'njiybcgxupwexdkz'
 
-DEFAULT_FROM_EMAIL = 'rishabhkirodiwal04@gmail.com'
+
+EMAIL_HOST_USER = os.environ.get('SMTP_USERNAME')  
+EMAIL_HOST_PASSWORD = os.environ.get('SMTP_PASSWORD')  
+DEFAULT_FROM_EMAIL = os.environ.get('SENDER_EMAIL')  
 
 AUTH_USER_MODEL = 'mainApp.CustomUser'

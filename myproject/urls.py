@@ -16,10 +16,9 @@ urlpatterns = [
 
     path('login/', views.login, name='login'),
     path('register/', views.register, name='register'),
-    path('profile/', views.profile, name='profile'),
-    
+    path('profile/<str:username>/', views.profile, name='profile'),    
     path('edit-profile/', views.edit_profile, name='edit-profile'),
-    path('change-password/', auth_views.PasswordChangeView.as_view(template_name='change_password.html'), name='change-password'),
+    path('change-password/', views.change_password , name='change_password'),
     path('verify-email/<str:uidb64>/<str:token>/', views.verify_email, name='verify_email'),
     
     path('logout/', auth_views.LogoutView.as_view(next_page='index'), name='logout'),
@@ -40,8 +39,9 @@ urlpatterns = [
     path('post/<int:post_id>/', views.full_post, name='full_post'),
     path('post/<int:post_id>/like/', views.like_post, name='like_post'),
     path('post/<int:post_id>/comment/', views.add_comment, name='add_comment'),
-    path('follow/<int:user_id>/', views.follow_user, name='follow_user'),
-    path('unfollow/<int:user_id>/', views.unfollow_user, name='unfollow_user'),
+    path('follow/<str:username>/', views.follow_user, name='follow_user'),
+    path('unfollow/<str:username>/', views.unfollow_user, name='unfollow_user'),
+    path('delete-user/<int:user_id>/', views.delete_user, name='delete_user'),
     
     # User List and Promotion URLs
     path('users/', views.user_list, name='user_list'),
@@ -55,4 +55,10 @@ urlpatterns = [
     path('competition/<int:competition_id>/submitted_entries/', views.submitted_entries_list, name='submitted_entries_list'),
     path('user/submitted_entries/', views.user_submitted_entries_list, name='user_submitted_entries_list'),
     path('actions/', views.actions, name='actions'),
+    path('add/', views.add_carousel_item, name='add_carousel_item'),
+    path('edit/<int:id>/', views.edit_carousel_item, name='edit_carousel_item'),
+    path('delete/<int:id>/', views.delete_carousel_item, name='delete_carousel_item'),
+    path('set-password/', views.set_password, name='set_password'),
+    path('view-profile/<str:username>/', views.view_user_profile, name='view_user_profile'),
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

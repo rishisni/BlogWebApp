@@ -5,14 +5,13 @@ from django.contrib.auth.models import AbstractUser
 class CustomUser(AbstractUser):
     is_admin = models.BooleanField(default=False)
     is_owner = models.BooleanField(default=False)
-
+    phone_no = models.CharField(max_length=15, blank=True, null=True)
 
     def followers_count(self):
         return self.followers.count()
 
     def following_count(self):
         return self.following.count()
-
 
 
 
@@ -102,3 +101,10 @@ class CompetitionEntry(models.Model):
     
 
 
+class CarouselItem(models.Model):
+    image = models.ImageField(upload_to='carousel_images/')
+    url = models.URLField(blank=True)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.image.name
