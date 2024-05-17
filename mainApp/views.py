@@ -36,7 +36,7 @@ def index(request):
     categories = Category.objects.annotate(post_count=Count('post'))
     submitted_entries = CompetitionEntry.objects.all()
     
-    total_category_posts = Post.objects.count()
+    total_category_posts = Post.objects.filter(approved=True).count()
     carousel_items = CarouselItem.objects.filter(is_active=True)
     
     return render(request, 'index.html',
@@ -88,7 +88,7 @@ def register(request):
             messages.error(request, 'There was an error with your registration. Please check the form for errors.')
     else:
         form = SignUpForm()
-    
+
     return render(request, 'register.html', {'form': form})
 
 
@@ -126,15 +126,21 @@ def login(request):
             user = authenticate(request, username=username_or_phone_or_email, password=password)
             if user is not None:
                 auth_login(request, user)
-                messages.success(request, 'Login successful.')
+                
                 return redirect('profile', username=request.user.username)
             else:
-                messages.error(request, 'Invalid username, phone number, or email and password combination.')
+                try:
+                    user = User.objects.get(username=username_or_phone_or_email)
+                    if user:
+                        messages.error(request, 'Incorrect password.')
+                except User.DoesNotExist:
+                    messages.error(request, 'Invalid username, phone number, or email and password combination.')
+        else:
+            messages.error(request, 'Invalid username, phone number, or email and password combination.')
     else:
         form = AuthenticationForm()
     
     return render(request, 'login.html', {'form': form})
-
 
 
 # -----------------------------------------------------------User Profile ----------------------------------------------------------------------
@@ -301,7 +307,7 @@ def create_category(request):
                 messages.success(request, "Category created successfully.")
                 return redirect('category_list')
             else:
-                messages.error(request, "There was an error creating the category. Please correct the errors below.")
+                messages.error(request, "Category Already Exists")
         else:
             form = CategoryForm()
         return render(request, 'create_category.html', {'form': form})
@@ -454,19 +460,35 @@ def category_posts(request, category_id):
 
 # -----------------------------------------------------------View Full Detail of Post ----------------------------------------------------------------------
 
+from django.db.models import F
+
+@login_required
 def full_post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    comments = post.comments.all()
+
+    # Check if the user is the creator of the post or is an owner
+    can_view_unapproved_post = False
+    if request.user == post.created_by or request.user.is_owner:
+        can_view_unapproved_post = True
+
+    # If the post is not approved and the user is not the creator or owner, redirect or handle differently
+    if not post.approved and not can_view_unapproved_post:
+        # Handle the case where the post is not approved and the user is not authorized to view it
+        messages.error(request, "You are not authorized to access this page.")
+        return redirect('index')
+
+    # Fetch comments ordered by their creation date in descending order (latest first)
+    comments = post.comments.order_by('-created_at')
 
     liked = False
-    like_count = post.likes.count()  
+    like_count = post.likes.count()
 
     if request.method == 'POST':
         if 'like' in request.POST:
-            if request.user not in post.likes.all():  
+            if request.user not in post.likes.all():
                 post.likes.add(request.user)
         elif 'unlike' in request.POST:
-            if request.user in post.likes.all():  
+            if request.user in post.likes.all():
                 post.likes.remove(request.user)
         elif 'comment' in request.POST:
             comment_form = CommentForm(request.POST)
@@ -475,14 +497,15 @@ def full_post(request, post_id):
                 comment.post = post
                 comment.user = request.user
                 comment.save()
+                messages.success(request, "Your comment has been added successfully!")
+            else:
+                messages.error(request, "Invalid comment. Please try again.")
     else:
         comment_form = CommentForm()
 
     liked = request.user in post.likes.all()
 
     return render(request, 'full_post.html', {'post': post, 'comments': comments, 'like_count': like_count, 'liked': liked, 'comment_form': comment_form})
-
-
 
 # -----------------------------------------------------------Add Comment to Post ----------------------------------------------------------------------
 

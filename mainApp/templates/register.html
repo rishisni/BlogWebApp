@@ -16,55 +16,35 @@
                                         <i class="fa fa-user fa-lg me-3 fa-fw"></i>
                                         <div class="form-outline flex-fill mb-0">
                                             <input type="text" name="username" class="form-control" placeholder="Username" required>
-                                            {% if form.username.errors %}
-                                            <div class="invalid-feedback d-block">
-                                                {{ form.username.errors|join:", " }}
-                                            </div>
-                                            {% endif %}
+                                            
                                         </div>
                                     </div>
                                     <div class="d-flex flex-row align-items-center mb-4">
                                         <i class="fa fa-envelope fa-lg me-3 fa-fw"></i>
                                         <div class="form-outline flex-fill mb-0">
                                             <input type="email" name="email" class="form-control" placeholder="Email" required>
-                                            {% if form.email.errors %}
-                                            <div class="invalid-feedback d-block">
-                                                {{ form.email.errors|join:", " }}
-                                            </div>
-                                            {% endif %}
+                                            
                                         </div>
                                     </div>
                                     <div class="d-flex flex-row align-items-center mb-4">
                                         <i class="fa fa-phone fa-lg me-3 fa-fw"></i>
                                         <div class="form-outline flex-fill mb-0">
                                             <input type="text" name="phone_no" class="form-control" placeholder="Phone Number" required>
-                                            {% if form.phone_no.errors %}
-                                            <div class="invalid-feedback d-block">
-                                                {{ form.phone_no.errors|join:", " }}
-                                            </div>
-                                            {% endif %}
+                                            
                                         </div>
                                     </div>
                                     <div class="d-flex flex-row align-items-center mb-4">
                                         <i class="fa fa-lock fa-lg me-3 fa-fw"></i>
                                         <div class="form-outline flex-fill mb-0">
                                             <input type="password" name="password1" class="form-control" placeholder="Password" required>
-                                            {% if form.password1.errors %}
-                                            <div class="invalid-feedback d-block">
-                                                {{ form.password1.errors|join:", " }}
-                                            </div>
-                                            {% endif %}
+                                            
                                         </div>
                                     </div>
                                     <div class="d-flex flex-row align-items-center mb-4">
                                         <i class="fa fa-lock fa-lg me-3 fa-fw"></i>
                                         <div class="form-outline flex-fill mb-0">
                                             <input type="password" name="password2" class="form-control" placeholder="Confirm Password" required>
-                                            {% if form.password2.errors %}
-                                            <div class="invalid-feedback d-block">
-                                                {{ form.password2.errors|join:", " }}
-                                            </div>
-                                            {% endif %}
+                                            
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">

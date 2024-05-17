@@ -26,6 +26,55 @@
 }
 
 
+/* Base styles for the button */
+.navbar-toggler.btn-custom-outline {
+    background-color: transparent; /* Make the background transparent */
+    border: 2px solid #0d1e80; /* Outline with theme color */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 15px; /* Padding for better click area */
+    transition: background-color 0.3s, border-color 0.3s; /* Smooth transitions */
+}
+
+/* Style for the icon inside the button */
+.navbar-toggler .navbar-toggler-icon {
+    display: inline-block;
+    width: 30px;
+    height: 2px;
+    background-color: #0d1e80; /* Theme color */
+    position: relative;
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+.navbar-toggler .navbar-toggler-icon::before,
+.navbar-toggler .navbar-toggler-icon::after {
+    content: '';
+    width: 30px;
+    height: 2px;
+    background-color: #0d1e80; /* Theme color */
+    position: absolute;
+    left: 0;
+    transition: all 0.3s;
+}
+
+.navbar-toggler .navbar-toggler-icon::before {
+    top: -8px;
+}
+
+.navbar-toggler .navbar-toggler-icon::after {
+    top: 8px;
+}
+
+/* Change background and border color on hover */
+.navbar-toggler.btn-custom-outline:hover {
+    background-color: #0d1e80; /* Background theme color */
+    border-color: #0d1e80; /* Border theme color */
+}
+
+.navbar-toggler.btn-custom-outline:hover .navbar-toggler-icon,
+.navbar-toggler.btn-custom-outline:hover .navbar-toggler-icon::before,
+.navbar-toggler.btn-custom-outline:hover .navbar-toggler-icon::after {
+    background-color: #ffffff; /* Change icon color on hover */
+}
 
 
 
@@ -39,7 +88,7 @@
     }
 }
 
- 
+
 .author-info {
     display: flex;
     align-items: center;
@@ -635,11 +684,27 @@
     letter-spacing: 2px; /* Adjust the letter spacing as needed */
     text-align: center; /* Center the heading */
     margin-top: 20px; /* Add some top margin to separate it from other elements */
-  } 
+}
 
+/* Responsive styles for smaller screens */
+@media (max-width: 767px) {
+    h2 {
+        font-size: 24px; /* Adjust the font size for smaller screens */
+        letter-spacing: 1px; /* Adjust the letter spacing for smaller screens */
+        margin-top: 15px; /* Adjust the top margin for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    h2 {
+        font-size: 20px; /* Adjust the font size for very small screens */
+        letter-spacing: 0.5px; /* Adjust the letter spacing for very small screens */
+        margin-top: 10px; /* Adjust the top margin for very small screens */
+    }
+}
   
-  /* Unique class for the poetry content */
-  .poetry-content {
+ /* Unique class for the poetry content */
+.poetry-content {
     font-family: 'Noto Nastaliq Urdu', 'Poppins', sans-serif;
     font-size: 20px;
     line-height: 1.6;
@@ -657,7 +722,19 @@
     color: #444; /* Default color */
     margin-bottom: 10px;
     letter-spacing: 1px;
-    
+}
+
+/* Responsive styles for mobile screens */
+@media (max-width: 767px) {
+    .poetry-content {
+        font-size: 16px; /* Adjust font size for smaller screens */
+        margin-left: 5px; /* Reduce left margin for smaller screens */
+    }
+
+    .poetry-content .full-desc {
+        font-size: 18px; /* Adjust font size for smaller screens */
+        margin-bottom: 8px; /* Reduce bottom margin for smaller screens */
+    }
 }
 
 /* Add attractive styles for Hindi content, e.g., italic */
@@ -690,4 +767,38 @@
 
 
 
+
+.card-title {
+    font-family: 'Poppins', sans-serif; /* Use the custom font */
+    font-size: 20px; /* Base font size */
+    font-weight: bold; /* Make the title bold */
+    color: #070707; /* Theme color */
+    
+    text-align: center; /* Center the title */
+    margin: 20px 0; /* Add some margin for spacing */
+}
+
+/* Responsive styles for tablets and larger screens */
+@media (min-width: 768px) {
+    .card-title {
+        font-size: 18px; /* Increase font size for tablets and larger screens */
+        margin: 25px 0; /* Adjust margin for larger screens */
+    }
+}
+
+/* Responsive styles for smaller screens */
+@media (max-width: 767px) {
+    .card-title {
+        font-size: 18px; /* Decrease font size for smaller screens */
+        margin: 15px 0; /* Adjust margin for smaller screens */
+    }
+}
+
+/* Responsive styles for very small screens */
+@media (max-width: 480px) {
+    .card-title {
+        font-size: 16px; /* Further decrease font size for very small screens */
+        margin: 10px 0; /* Adjust margin for very small screens */
+    }
+}
 

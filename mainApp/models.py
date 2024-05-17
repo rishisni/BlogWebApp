@@ -18,12 +18,13 @@ class CustomUser(AbstractUser):
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, blank=True)
-    bio = models.TextField(blank=True)
+    bio = models.TextField(default='रचनाकार', blank=True)  # Setting default value for bio field
     place = models.CharField(max_length=100, blank=True)
     profile_image = models.ImageField(upload_to='media/profile_images/', blank=True)
 
     def __str__(self):
         return self.user.username
+
 
 class Category(models.Model):
     name_en = models.CharField(max_length=100, verbose_name="English Name",unique=True)
@@ -34,7 +35,18 @@ class Category(models.Model):
 
     class Meta:
         verbose_name_plural = "Categories"
+        
+    def clean_name_en(self):
+        name_en = self.cleaned_data.get('name_en')
+        if Category.objects.filter(name_en=name_en).exists():
+            raise ValidationError("A category with this English name already exists.")
+        return name_en
 
+    def clean_name_hi(self):
+        name_hi = self.cleaned_data.get('name_hi')
+        if Category.objects.filter(name_hi=name_hi).exists():
+            raise ValidationError("A category with this Hindi name already exists.")
+        return name_hi
 
 class Post(models.Model):
     title = models.CharField(max_length=100)
