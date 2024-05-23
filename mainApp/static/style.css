@@ -660,6 +660,28 @@
     box-shadow: 0 0 0 3px #00a8e9;
   }
   
+@media (max-width: 991px) {
+    .btn-custom-outline {
+        font-size: 16px; /* Adjust font size for smaller screens */
+        padding: 8px 16px; /* Adjust padding for smaller screens */
+    }
+}
+
+/* Small screens (phones) */
+@media (max-width: 767px) {
+    .btn-custom-outline {
+        font-size: 14px; /* Adjust font size for even smaller screens */
+        padding: 6px 12px; /* Adjust padding for even smaller screens */
+    }
+}
+
+/* Extra small screens (very small phones) */
+@media (max-width: 575px) {
+    .btn-custom-outline {
+        font-size: 12px; /* Adjust font size for very small screens */
+        padding: 4px 8px; /* Adjust padding for very small screens */
+    }
+}
 
 
   .poetry {
@@ -703,11 +725,11 @@
     }
 }
   
- /* Unique class for the poetry content */
+/* Unique class for the poetry content */
 .poetry-content {
     font-family: 'Noto Nastaliq Urdu', 'Poppins', sans-serif;
-    font-size: 20px;
-    line-height: 1.6;
+    font-size: 14px; /* Default font size */
+    line-height: 1.4;
     text-align: justify;
     margin: 10px 0;
     color: #333; /* Default color */
@@ -717,23 +739,35 @@
 
 /* Unique class for the poetry description */
 .poetry-content .full-desc {
-    font-size: 22px;
-    font-weight: bold;
-    color: #444; /* Default color */
-    margin-bottom: 10px;
+    font-family: 'Noto Nastaliq Urdu', 'Poppins', sans-serif;
+    font-size: 18px; /* Default font size */
+    
+    color: #080808; /* Default color */
+    margin-bottom: 8px;
     letter-spacing: 1px;
 }
 
-/* Responsive styles for mobile screens */
-@media (max-width: 767px) {
+/* Responsive styles for smaller screens */
+@media (max-width: 991px) {
     .poetry-content {
-        font-size: 16px; /* Adjust font size for smaller screens */
-        margin-left: 5px; /* Reduce left margin for smaller screens */
+        font-size: 16px; 
     }
 
     .poetry-content .full-desc {
-        font-size: 18px; /* Adjust font size for smaller screens */
-        margin-bottom: 8px; /* Reduce bottom margin for smaller screens */
+        font-size: 16px; 
+    }
+}
+
+/* Responsive styles for even smaller screens */
+@media (max-width: 767px) {
+    .poetry-content {
+        font-size: 16px; 
+        margin-left: 5px; 
+    }
+
+    .poetry-content .full-desc {
+        font-size: 16px; 
+        margin-bottom: 4px; 
     }
 }
 
@@ -802,3 +836,40 @@
     }
 }
 
+/* Default styles for larger screens */
+.profile-link {
+    color: rgb(133, 51, 10); /* Primary color for the link */
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s ease; /* Smooth color transition */
+    font-size: 18px; /* Default font size */
+}
+
+.profile-link:hover,
+.profile-link:focus {
+    color: rgb(69, 26, 4); /* Darker shade on hover or focus */
+    text-decoration: none; /* Keep underline removed on hover or focus */
+}
+
+/* Custom font and spacing adjustments for medium screens */
+@media (max-width: 991px) {
+    .profile-link,
+    .post-date {
+        font-size: 16px; /* Adjust font size for smaller screens */
+    }
+}
+
+/* Responsive styles for even smaller screens */
+@media (max-width: 767px) {
+    .profile-link,
+    .post-date {
+        font-size: 14px; /* Adjust font size for even smaller screens */
+    }
+}
+
+/* Responsive styles for very small screens */
+@media (max-width: 575px) {
+    .profile-link,
+    .post-date {
+        font-size: 12px; /* Adjust font size for very small screens */
+    }
+}

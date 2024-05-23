@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row justify-content-center mb-4">
+    <div class="col-md-8">
+        <form class="form-inline" method="GET" action="{% url 'post_search' %}">
+            <div class="input-group">
+                <input type="search" class="form-control" placeholder="शायरी , कहानी, कविता खोजें .."
+                    aria-label="Search" name="q" value="{{ request.GET.q }}">
+                <button type="submit" class="btn btn-custom-outline">खोजें</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="container-fluid bg-image">
+    <div class="row justify-content-center">
+        <div class="col-xl-8 col-lg-9 col-md-10">
+
+            <div class="container mt-5">
+                {% if search_query %}
+                   
+                    {% if posts %}
+                    <h2 class="mb-4">Search Results for "{{ search_query }}"</h2>
+                        
+                            {% for post in posts %}
+                                
+                                    {% include 'partials/post_details.html' %}
+                               
+                            {% endfor %}
+                        
+                    {% else %}
+                        <h2>No results found for "{{ search_query }}"</h2>
+                    {% endif %}
+                {% else %}
+                    <h2>Search for शायरी, ग़ज़ल, गीत, ब्लॉग, कहानी, कविता</h2>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

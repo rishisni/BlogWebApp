@@ -107,7 +107,7 @@ class CompetitionEntry(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     post_title = models.CharField(max_length=100)
     post_description = models.TextField()
-    category = models.CharField(max_length=100)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     

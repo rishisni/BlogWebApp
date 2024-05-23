@@ -85,7 +85,13 @@ def register(request):
             messages.success(request, 'Registration successful. Please check your email to verify your account.')
             return render(request, 'registration_success.html')
         else:
-            messages.error(request, 'There was an error with your registration. Please check the form for errors.')
+            # If form is invalid, display error messages
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"Error in {field}: {error}")
+
+            # Redirect back to the registration page with the form
+            return render(request, 'register.html', {'form': form})
     else:
         form = SignUpForm()
 
@@ -95,6 +101,7 @@ def register(request):
 
 # -----------------------------------------------------------Verify Email ----------------------------------------------------------------------
 
+# Verify Email View
 def verify_email(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
@@ -147,48 +154,51 @@ def login(request):
 
 @login_required
 def profile(request, username):
-    if request.user.username != username:
-        # If the requesting user is not the same as the one being viewed, raise a 404 error
-        messages.error(request, "You are not authorized to access this page.")
-        return redirect('index')
-    
-    user = CustomUser.objects.get(username=username)
-    user_posts = Post.objects.filter(created_by=user)
+    viewed_user = get_object_or_404(CustomUser, username=username)
+    user_posts = Post.objects.filter(created_by=viewed_user)
     
     approved_posts = user_posts.filter(approved=True)
-    
     pending_posts = user_posts.filter(approved=False, declined=False)
-    
     declined_posts = user_posts.filter(declined=True)
-
-    user_submitted_entries = CompetitionEntry.objects.filter(user=request.user)
+    user_submitted_entries = CompetitionEntry.objects.filter(user=viewed_user)
 
     total_approved_posts = approved_posts.count()
-
     total_pending_posts = pending_posts.count()
-
     total_declined_posts = declined_posts.count()
-
     total_user_submitted_entries = user_submitted_entries.count()
-
     total_posts = total_approved_posts + total_user_submitted_entries
 
-    profile = Profile.objects.filter(user=user).first()
+    profile = Profile.objects.filter(user=viewed_user).first()
     
-    return render(request, 'profile.html', {
-        'user': user,
-        'profile': profile,
-        'approved_posts': approved_posts,
-        'pending_posts': pending_posts,
-        'declined_posts': declined_posts,
-        'total_posts': total_posts,
-        'total_approved_posts': total_approved_posts,
-        'total_pending_posts': total_pending_posts,
-        'total_declined_posts': total_declined_posts,
-        'user_submitted_entries': user_submitted_entries,
-        'total_user_submitted_entries': total_user_submitted_entries,
-        
-    })
+    # Check if the viewed profile is the same as the logged-in user
+    is_own_profile = request.user.username == username
+    if is_own_profile:
+        return render(request, 'profile.html', {
+            'user': viewed_user,
+            'profile': profile,
+            'approved_posts': approved_posts,
+            'pending_posts': pending_posts,
+            'declined_posts': declined_posts,
+            'total_posts': total_posts,
+            'total_approved_posts': total_approved_posts,
+            'total_pending_posts': total_pending_posts,
+            'total_declined_posts': total_declined_posts,
+            'user_submitted_entries': user_submitted_entries,
+            'total_user_submitted_entries': total_user_submitted_entries,
+        })
+    else:
+        is_following = request.user.is_authenticated and viewed_user.followers.filter(follower=request.user).exists()
+        return render(request, 'view_user_profile.html', {
+            'viewed_user': viewed_user,
+            'profile': profile,
+            'approved_posts': approved_posts,
+            'total_posts': total_posts,
+            'total_approved_posts': total_approved_posts,
+            'user_submitted_entries': user_submitted_entries,
+            'total_user_submitted_entries': total_user_submitted_entries,
+            'profile_user': viewed_user,
+            'is_following': is_following,
+        })
 
 # -----------------------------------------------------------Edit Profile ----------------------------------------------------------------------
 
@@ -266,7 +276,7 @@ def set_password(request):
             messages.success(request, 'Your password was successfully set!')
             return redirect('profile', username=request.user.username)
         else:
-            messages.error(request, 'Please correct the error below.')
+            messages.error(request, 'Password Does Not Match.')
     else:
         form = SetPasswordForm(user=request.user)
     
@@ -343,7 +353,7 @@ def create_post(request):
             messages.success(request, 'Post created successfully.')
             return redirect('profile', username=request.user.username)  # Fix here
         else:
-            messages.error(request, 'There was an error creating the post. Please check the form.')
+            messages.error(request, 'There was an error creating the post')
     else:
         form = PostForm()
     return render(request, 'create_post.html', {'form': form})
@@ -447,7 +457,7 @@ def decline_post(request, post_id):
 
 def category_posts(request, category_id):
     category = Category.objects.get(pk=category_id)
-    posts = Post.objects.filter(category=category, approved=True)
+    posts = Post.objects.filter(category=category, approved=True).order_by('-created_at')
     
     
     like_counts = [post.likes_count for post in posts]
@@ -462,14 +472,15 @@ def category_posts(request, category_id):
 
 from django.db.models import F
 
-@login_required
+
 def full_post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
 
-    # Check if the user is the creator of the post or is an owner
+    # Check if the user is authenticated and is the creator of the post or is an owner
     can_view_unapproved_post = False
-    if request.user == post.created_by or request.user.is_owner:
-        can_view_unapproved_post = True
+    if request.user.is_authenticated:
+        if request.user == post.created_by or getattr(request.user, 'is_owner', False):
+            can_view_unapproved_post = True
 
     # If the post is not approved and the user is not the creator or owner, redirect or handle differently
     if not post.approved and not can_view_unapproved_post:
@@ -485,10 +496,10 @@ def full_post(request, post_id):
 
     if request.method == 'POST':
         if 'like' in request.POST:
-            if request.user not in post.likes.all():
+            if request.user.is_authenticated and request.user not in post.likes.all():
                 post.likes.add(request.user)
         elif 'unlike' in request.POST:
-            if request.user in post.likes.all():
+            if request.user.is_authenticated and request.user in post.likes.all():
                 post.likes.remove(request.user)
         elif 'comment' in request.POST:
             comment_form = CommentForm(request.POST)
@@ -503,9 +514,11 @@ def full_post(request, post_id):
     else:
         comment_form = CommentForm()
 
-    liked = request.user in post.likes.all()
+    liked = request.user.is_authenticated and request.user in post.likes.all()
 
     return render(request, 'full_post.html', {'post': post, 'comments': comments, 'like_count': like_count, 'liked': liked, 'comment_form': comment_form})
+
+
 
 # -----------------------------------------------------------Add Comment to Post ----------------------------------------------------------------------
 
@@ -523,6 +536,24 @@ def add_comment(request, post_id):
         else:
             messages.error(request, "Invalid comment. Please try again.")
     return redirect('full_post', post_id=post_id)
+
+
+# -----------------------------------------------------------Delete Comment's Post ----------------------------------------------------------------------
+
+
+@login_required
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+
+    # Only allow owners to delete comments
+    if getattr(request.user, 'is_owner', False):
+        comment.delete()
+        messages.success(request, "Comment deleted successfully.")
+    else:
+        messages.error(request, "You are not authorized to delete this comment.")
+
+    return redirect('full_post', post_id=comment.post.id)
+
 
 
 # -----------------------------------------------------------Like/Unlike Post ----------------------------------------------------------------------
@@ -654,7 +685,7 @@ def competition_list(request):
 
         return render(request, 'competition_list.html', {'new_competitions': new_competitions, 'old_competitions': old_competitions})
     else:
-        messages.error(request, "There are no competitions available at the moment.")
+        
         return render(request, 'competition_list.html')
 
 
@@ -679,16 +710,12 @@ def submit_entry(request, competition_id):
     competition = get_object_or_404(Competition, pk=competition_id)
 
     if competition.end_date <= timezone.now():
-        
-        messages.error(request, "Sorry, the competition has already ended. You cannot submit an entry.")
-        
+        messages.error(request, "क्षमा करें, प्रविष्टियां पहले ही समाप्त हो चुकी है। आप कोई पोस्ट सबमिट नहीं कर सकते.")
         return redirect('competition_detail', competition_id=competition_id)
 
     entry = CompetitionEntry.objects.filter(competition=competition, user=request.user).first()
-
-    
     if entry:
-        messages.error(request, "Sorry, you can only submit one entry.")
+        messages.error(request, "क्षमा करें, आप केवल एक पोस्ट सबमिट कर सकते हैं।")
         return redirect('competition_detail', competition_id=competition_id)
 
     if request.method == 'POST':
@@ -698,14 +725,12 @@ def submit_entry(request, competition_id):
             entry.competition = competition
             entry.user = request.user
             entry.save()
-            
             messages.success(request, "Your entry has been submitted successfully.")
             return redirect('user_submitted_entries_list')
     else:
         form = CompetitionEntryForm()
 
     return render(request, 'submit_entry.html', {'form': form, 'competition': competition})
-
 
 
 
@@ -824,32 +849,51 @@ def delete_user(request, user_id):
 
 
 # Add a new view function to display other users' profiles
-def view_user_profile(request, username):
-    user = get_object_or_404(CustomUser, username=username)
-    user_posts = Post.objects.filter(created_by=user)
+# def view_user_profile(request, username):
+#     user = get_object_or_404(CustomUser, username=username)
+#     user_posts = Post.objects.filter(created_by=user)
     
-    approved_posts = user_posts.filter(approved=True)
+#     approved_posts = user_posts.filter(approved=True)
     
 
-    user_submitted_entries = CompetitionEntry.objects.filter(user=user)
+#     user_submitted_entries = CompetitionEntry.objects.filter(user=user)
 
-    total_approved_posts = approved_posts.count()
+#     total_approved_posts = approved_posts.count()
     
-    total_user_submitted_entries = user_submitted_entries.count()
-    total_posts = total_approved_posts + total_user_submitted_entries
+#     total_user_submitted_entries = user_submitted_entries.count()
+#     total_posts = total_approved_posts + total_user_submitted_entries
     
-    profile = Profile.objects.filter(user=user).first()
-    profile_user = CustomUser.objects.get(username=username)
-    is_following = request.user.is_authenticated and profile_user.followers.filter(follower=request.user).exists()
-    return render(request, 'view_user_profile.html', {
-        'viewed_user': user,
-        'profile': profile,
-        'approved_posts': approved_posts,
+#     profile = Profile.objects.filter(user=user).first()
+#     profile_user = CustomUser.objects.get(username=username)
+#     is_following = request.user.is_authenticated and profile_user.followers.filter(follower=request.user).exists()
+#     return render(request, 'view_user_profile.html', {
+#         'viewed_user': user,
+#         'profile': profile,
+#         'approved_posts': approved_posts,
         
-        'total_posts': total_posts,
-        'total_approved_posts': total_approved_posts,
+#         'total_posts': total_posts,
+#         'total_approved_posts': total_approved_posts,
         
-        'user_submitted_entries': user_submitted_entries,
-        'total_user_submitted_entries': total_user_submitted_entries,
-        'profile_user': profile_user, 'is_following': is_following
-    })
+#         'user_submitted_entries': user_submitted_entries,
+#         'total_user_submitted_entries': total_user_submitted_entries,
+#         'profile_user': profile_user, 'is_following': is_following
+#     })
+
+
+def post_search(request):
+    query = request.GET.get('q')
+    posts = Post.objects.filter(approved=True).order_by('-created_at')
+
+    if query:
+        posts = posts.filter(
+            models.Q(created_by__username__icontains=query) |  # Search by username
+            models.Q(title__icontains=query) |  # Search by post title
+            models.Q(description__icontains=query)  # Search by description
+            # Add more fields to search if needed
+        )
+
+    context = {
+        'posts': posts,
+        'search_query': query  # Renamed to match the template variable
+    }
+    return render(request, 'search_results.html', context)

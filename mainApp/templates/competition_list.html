@@ -1,24 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>नई प्रतियोगिताएँ</h2>
+    <h2>नई प्रविष्टियां</h2>
     {% if new_competitions %}
-        <ul>
+        
             {% for competition in new_competitions %}
                 {% include 'partials/competition_card.html' %}
             {% endfor %}
-        </ul>
+        
     {% else %}
-        <p>कोई नई प्रतियोगिताएँ नहीं हैं।</p>
+        <p>कोई नई प्रविष्टियां नहीं हैं।</p>
     {% endif %}
 
     {% for competition in old_competitions %}
-    <h2>पुरानी प्रतियोगिताएँ</h2>
+    <h2>पुरानी प्रविष्टियां</h2>
    
-        <ul>
+       
             
                 {% include 'partials/competition_card.html' %}
             
-        </ul>
+        
         {% endfor %}
 {% endblock %}

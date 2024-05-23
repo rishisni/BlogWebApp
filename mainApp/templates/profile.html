@@ -26,15 +26,15 @@
                                     <p class="card-text"><i class="fas fa-pen"></i> {{ profile.bio }}</p>
                                      <div class="d-flex justify-content-start rounded-3 p-2 mb-2 bg-body-tertiary">
                                         <div>
-                                            <p class="small text-muted mb-1">Posts</p>
+                                            <p class="small text-muted mb-1">पोस्ट</p>
                                             <p class="mb-0">{{ total_posts }}</p>
                                         </div>
                                         <div class="px-3">
-                                            <p class="small text-muted mb-1">Followers</p>
+                                            <p class="small text-muted mb-1">फॉलोअर्स </p>
                                             <p class="mb-0">{{ user.followers_count }}</p>
                                         </div>
                                         <div>
-                                            <p class="small text-muted mb-1">Following</p>
+                                            <p class="small text-muted mb-1">फॉलोइंग </p>
                                             <p class="mb-0">{{ user.following_count }}</p>
                                         </div>
                                     </div>
@@ -68,7 +68,7 @@
                     ({{ total_pending_posts }})</button>
                 <button type="button" class="btn btn-custom-outline" onclick="showPosts('declined')">अस्वीकृत
                     ({{ total_declined_posts }}) </button>
-                <button type="button" class="btn btn-custom-outline" onclick="showPosts('entries')">प्रतियोगिता पोस्ट
+                <button type="button" class="btn btn-custom-outline" onclick="showPosts('entries')">प्रविष्टियां पोस्ट
                     ({{ total_user_submitted_entries }})</button>
 
             </div>
@@ -95,7 +95,7 @@
             <div class="row justify-content-center" id="pending-posts" style="display:none;">
                 <div class="col-md-12">
                     <h2>लंबित पोस्ट</h2>
-                    <ul>
+                    
                         {% if total_pending_posts == 0 %}
                         <p>कोई लंबित पोस्ट नहीं.</p>
                         {% else %}
@@ -103,14 +103,14 @@
                         {% include 'partials/post_details.html' %}
                         {% endfor %}
                         {% endif %}
-                    </ul>
+                
                 </div>
             </div>
 
             <div class="row justify-content-center" id="declined-posts" style="display:none;">
                 <div class="col-md-12">
                     <h2>अस्वीकृत पोस्ट </h2>
-                    <ul>
+                    
                         {% if total_declined_posts == 0 %}
                         <p class="no-messages">कोई अस्वीकृत पोस्ट नहीं.</p>
                         {% else %}
@@ -118,20 +118,20 @@
                         {% include 'partials/post_details.html' %}
                         {% endfor %}
                         {% endif %}
-                    </ul>
+                    
                 </div>
             </div>
 
             <div class="row justify-content-center" id="submitted-entries" style="display:none;">
                 <div class="col-md-12">
-                    <h2>प्रतियोगिता पोस्ट</h2>
+                    <h2>प्रविष्टियां पोस्ट</h2>
                     {% if user_submitted_entries %}
                     {% for entry in user_submitted_entries %}
                     {% include 'partials/competition_post.html' %}
                     {% endfor %}
                    
                     {% else %}
-                    <p>कोई प्रतियोगिता पोस्ट नहीं.</p>
+                    <p>कोई प्रविष्टियां पोस्ट नहीं.</p>
                     {% endif %}
                     
 

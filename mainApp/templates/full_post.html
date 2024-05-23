@@ -4,7 +4,7 @@
 
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-lg-10">
+        <div class="col-lg-10 col-md-12">
             <div class="card mt-4">
                 <div class="card-body">
                     <h2 class="card-title text-center" style="color: brown;">{{ post.title }}</h2>
@@ -13,17 +13,24 @@
                             <img src="{% if post.created_by.profile.profile_image %}{{ post.created_by.profile.profile_image.url }}{% else %}/media/profile_images/default.png{% endif %}"
                                 alt="Profile Image" class="profile-image img-fluid rounded-circle">
                         </div>
-                        <p class="card-text mb-0"><strong>{{ post.created_by }}</strong></p>
+                        <p class="card-text mb-0">
+                            <strong>
+                                <a href="{% url 'profile' username=post.created_by.username %}" class="profile-link">
+                                    {{ post.created_by }}
+                                    </a>
+                            </strong>
+                        </p>
                         <div class="author-details">
-                            <p class="card-text mb-0">{{ post.created_at|date:"d F, Y" }}</p>
+                            <p class="card-text mb-0 post-date">{{ post.created_at|date:"d F, Y" }}</p>
                         </div>
                     </div>
                     <hr style="border-color: brown;">
                     <div class="poetry-content">
-                        <p style="white-space: pre-wrap;" class="card-text text-center full-desc">{{ post.description }}</p>
+                        <p style="white-space: pre-wrap;" class="card-text text-center full-desc ">{{ post.description }}</p>
                     </div>
                     <div class="d-flex justify-content-center mt-4">
-                        <a href="{% url 'category-posts' post.category.id %}" style="text-decoration:none;" class="mb-4 align-items-center">
+                        <a href="{% url 'category-posts' post.category.id %}" style="text-decoration:none;"
+                            class="mb-4 align-items-center">
                             <p class="badge-lg custom-badge align-items-center text-center"
                                 style="font-family: 'Biryani', sans-serif; font-size: 14px; font-weight:normal;">
                                 {{ post.category.name_hi }}
@@ -32,8 +39,8 @@
                     </div>
                 </div>
 
-                <div class="card-footer d-flex justify-content-between align-items-center">
-                    <form action="{% url 'like_post' post.id %}" method="post">
+                <div class="card-footer d-flex justify-content-between align-items-center flex-wrap">
+                    <form action="{% url 'like_post' post.id %}" method="post" class="mb-2 mb-lg-0">
                         {% csrf_token %}
                         <button class="btn btn-custom-outline btn">
                             {% if liked %}
@@ -44,56 +51,66 @@
                             {{ like_count }}
                         </button>
                     </form>
-                    
-                    {% if post.created_by == request.user or request.user.is_owner %}
-                    <div>
-                        <a class="btn-custom-outline" href="{% url 'delete-post' post.id %}">
+
+                    <div class="d-flex">
+                        {% if post.created_by == request.user or request.user.is_owner %}
+                        <a class="btn btn-custom-outline mr-2" href="{% url 'delete-post' post.id %}">
                             <i class="fas fa-trash-alt"></i>
                         </a>
-                    </div>
-                    {% endif %}
+                        {% endif %}
 
-                    {% if post.created_by == request.user %}
-                    <a href="{% url 'edit-post' post.id %}" class="btn-custom-outline">
-                        <i class="far fa-edit"></i>
-                    </a>
-                    {% endif %}
-                    {% if not post.approved and user.is_owner or user.is_admin %}
-                    <form method="POST" action="{% url 'approve_post' post.id %}" >
-                        {% csrf_token %}
-                        <button type="submit" name="action" value="approve" class="btn btn-custom-outline"><i class="fas fa-check"></i></button>
-                    </form>
-                    <form method="POST" action="{% url 'decline_post' post.id %}" >
-                        {% csrf_token %}
-                        <button type="submit" name="action" value="decline" class="btn btn-custom-outline"><i class="fas fa-times"></i></button>
-                    </form>
-                    {% endif %}
+                        {% if post.created_by == request.user %}
+                        <a href="{% url 'edit-post' post.id %}" class="btn btn-custom-outline mr-2">
+                            <i class="far fa-edit"></i>
+                        </a>
+                        {% endif %}
+                        {% if not post.approved and user.is_owner or user.is_admin %}
+                        <form method="POST" action="{% url 'approve_post' post.id %}" class="mr-2">
+                            {% csrf_token %}
+                            <button type="submit" name="action" value="approve" class="btn btn-custom-outline"><i
+                                    class="fas fa-check"></i></button>
+                        </form>
+                        <form method="POST" action="{% url 'decline_post' post.id %}">
+                            {% csrf_token %}
+                            <button type="submit" name="action" value="decline" class="btn btn-custom-outline"><i
+                                    class="fas fa-times"></i></button>
+                        </form>
+                        {% endif %}
+                    </div>
                 </div>
 
                 <!-- Social Media Share Buttons -->
                 <div class="card-footer">
-                    <div class="d-flex justify-content-center">
-                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" class="btn btn-custom-outline mr-2">
-                            <i class="fab fa-facebook-f"></i> Share on Facebook
+
+                    <div id="shareOptions" class="d-flex justify-content-center flex-wrap" style="display: none;">
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}"
+                            target="_blank" class="btn btn-custom-outline mr-2 mb-2">
+                            <i class="fab fa-facebook-f"></i>
                         </a>
-                        <a href="https://api.whatsapp.com/send?text={{ request.build_absolute_uri }}" target="_blank" class="btn btn-custom-outline mr-2">
-                            <i class="fab fa-whatsapp"></i> Share on WhatsApp
+                        <a href="https://api.whatsapp.com/send?text={{ request.build_absolute_uri }}" target="_blank"
+                            class="btn btn-custom-outline mr-2 mb-2">
+                            <i class="fab fa-whatsapp"></i>
                         </a>
-                        <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ post.title }}" target="_blank" class="btn btn-custom-outline mr-2">
-                            <i class="fab fa-twitter"></i> Share on Twitter
+                        <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ post.title }}"
+                            target="_blank" class="btn btn-custom-outline mr-2 mb-2">
+                            <i class="fab fa-twitter"></i>
                         </a>
-                       
+                        <a href="javascript:void(0);" onclick="shareOnInstagram()" class="btn btn-custom-outline mr-2 mb-2">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
 
     <div class="row justify-content-center mt-4">
-        <div class="col-lg-10">
+        <div class="col-lg-10 col-md-12">
             <div class="card mt-4">
                 <div class="card-body">
-                    <h3 class="section-title">कमेंट करे</h3>
+                    <h2>कमेंट करे</h2>
                     <form action="{% url 'add_comment' post.id %}" method="post" class="comment-form">
                         {% csrf_token %}
                         <div class="form-group">
@@ -107,30 +124,35 @@
     </div>
 
     <div class="row justify-content-center mt-4">
-        <div class="col-lg-10">
+        <div class="col-lg-10 col-md-12">
             <div class="card mt-4">
                 <div class="card-body">
-                    <h3 style="font-size:18; margin-left: 20px;">अन्य लेखकों की टिप्पणियाँ</h3>
+                    <h3 style="font-size:18px; margin-left: 20px;">अन्य लेखकों की टिप्पणियाँ</h3>
                     <div class="container mt-4">
                         {% for comment in comments %}
-                        <div>
-                            <div class="card-body">
-                                <div class="author-info d-flex align-items-center justify-content-between">
-                                    <div class="profile-pic">
-                                        <img src="{% if comment.user.profile.profile_image %}{{ comment.user.profile.profile_image.url }}{% else %}/media/profile_images/default.png{% endif %}"
-                                            alt="Profile Image" class="profile-image img-fluid rounded-circle">
-                                    </div>
-                                    <p class="card-text mb-0">{{ comment.user.username }}</p>
-                                    <div class="author-details">
-                                       
-                                        <p class="card-text mb-0">{{ comment.created_at|hindi_date:"d MMMM, YYYY" }}</p>
-                                                                            </div>
-                                </div>
-                                <div>
-                                    <p class="card-text mr-2">{{ comment.text }}</p>
-                                </div>
+
+
+                        <div class="author-info d-flex align-items-center justify-content-between">
+                            <div class="profile-pic">
+                                <img src="{% if comment.user.profile.profile_image %}{{ comment.user.profile.profile_image.url }}{% else %}/media/profile_images/default.png{% endif %}"
+                                    alt="Profile Image" class="profile-image img-fluid rounded-circle">
+                            </div>
+                            <p class="card-text mb-0 post-date">{{ comment.user.username }}</p>
+                            <div class="author-details">
+                                <p class="card-text mb-0 post-date">{{ comment.created_at|hindi_date:"d MMMM, YYYY" }}
+                                </p>
                             </div>
                         </div>
+                        <div>
+                            <p class="card-text mr-2">{{ comment.text }}</p>
+
+                        </div>
+                        {% if request.user.is_authenticated and request.user.is_owner %}
+                        <form action="{% url 'delete_comment' comment.id %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                        {% endif %}
                         {% empty %}
                         <p class="no-comments-msg">अब तक कोई टिप्पणी नहीं।</p>
                         {% endfor %}
@@ -140,5 +162,22 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    function shareOnInstagram() {
+        if (navigator.share) {
+            navigator.share({
+                title: 'Check this out!',
+                url: '{{ request.build_absolute_uri }}'
+            }).then(() => {
+                console.log('Thanks for sharing!');
+            }).catch(console.error);
+        } else {
+            // fallback for browsers that don't support navigator.share
+            window.open('https://www.instagram.com/', '_blank');
+        }
+    }
+</script>
 
 {% endblock %}

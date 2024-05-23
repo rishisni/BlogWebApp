@@ -42,23 +42,22 @@ urlpatterns = [
     path('follow/<str:username>/', views.follow_user, name='follow_user'),
     path('unfollow/<str:username>/', views.unfollow_user, name='unfollow_user'),
     path('delete-user/<int:user_id>/', views.delete_user, name='delete_user'),
-    
-    # User List and Promotion URLs
     path('users/', views.user_list, name='user_list'),
     path('promote/<int:user_id>/', views.promote_to_admin, name='promote_to_admin'),
     path('demote/<int:user_id>/', views.demote_to_user, name='demote_to_user'),
     
-    path('add_competition/', views.add_competition, name='add_competition'),
-    path('competition/<int:competition_id>/submit_entry/', views.submit_entry, name='submit_entry'),
+    path('add-competition/', views.add_competition, name='add_competition'),
+    path('competition/<int:competition_id>/submit-entry/', views.submit_entry, name='submit_entry'),
     path('competition/<int:competition_id>/', views.competition_detail, name='competition_detail'),
     path('competitions/', views.competition_list, name='competition_list'),
-    path('competition/<int:competition_id>/submitted_entries/', views.submitted_entries_list, name='submitted_entries_list'),
-    path('user/submitted_entries/', views.user_submitted_entries_list, name='user_submitted_entries_list'),
-    path('actions/', views.actions, name='actions'),
-    path('add/', views.add_carousel_item, name='add_carousel_item'),
+    path('competition/<int:competition_id>/submitted-entries/', views.submitted_entries_list, name='submitted_entries_list'),
+    path('user/submitted-entries/', views.user_submitted_entries_list, name='user_submitted_entries_list'),
+    path('admin-actions/', views.actions, name='actions'),
+    path('add-carousel/', views.add_carousel_item, name='add_carousel_item'),
     path('edit/<int:id>/', views.edit_carousel_item, name='edit_carousel_item'),
     path('delete/<int:id>/', views.delete_carousel_item, name='delete_carousel_item'),
     path('set-password/', views.set_password, name='set_password'),
-    path('view-profile/<str:username>/', views.view_user_profile, name='view_user_profile'),
+    path('post/search/', views.post_search, name='post_search'),
+    path('delete_comment/<int:comment_id>/', views.delete_comment, name='delete_comment'),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

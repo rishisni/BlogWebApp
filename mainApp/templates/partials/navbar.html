@@ -4,11 +4,11 @@
             <img src="/static/images/thesoultalk.png" alt="The Soul Talk" class="logo-img"
                 style="width:150px; height :50px;">
         </a>
+        <a class="btn-custom-outline  my-2 my-sm-0" href="{% url 'post_search' %}" type="submit">खोज करे</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
@@ -21,7 +21,15 @@
 
                 <li class="nav-item">
                     <a class="nav-link nav-link-big" href="{% url 'competition_list' %}"> <i
-                            class="fas fa-trophy"></i>काव्य प्रतियोगिता</a>
+                            class="fas fa-trophy"></i>काव्य प्रविष्टियां</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-link-big" href="#"> 
+                        <i class="fas fa-calendar-day"></i>आगामी कार्यक्रम</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-link-big" href="https://thequotestore.in/"> 
+                        <i class="fas fa-book"></i> किताबें और मर्चेंडाइज</a>
                 </li>
 
                 {% if user.is_authenticated %}
@@ -33,7 +41,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link nav-link-big" href="{% url 'add_competition' %}"> <i
-                            class="fas fa-plus-circle"></i>प्रतियोगिता जोड़ें</a>
+                            class="fas fa-plus-circle"></i>प्रविष्टियां जोड़ें</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link nav-link-big" href="{% url 'actions' %}"> <i
@@ -41,14 +49,10 @@
                 </li>
 
                 {% endif %}
-                <!-- {% if  user.is_owner %}
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-big" href="{% url 'actions' %}"> <i class="fas fa-user-shield"></i>Actions</a>
-                    </li>
-                    {% endif %} -->
+               
                 <li class="nav-item">
                     <a class="nav-link nav-link-big" href="{% url 'profile' request.user.username %}">
-                        <i class="fas fa-id-badge"></i> Profile
+                        <i class="fas fa-id-badge"></i> प्रोफ़ाइल
                     </a>
                 </li>
 
@@ -58,18 +62,18 @@
                         {% csrf_token %}
                         <button type="submit" class="nav-link nav-link-big"
                             style="background: none; border: none; cursor: pointer;"> <i
-                                class="fas fa-sign-out-alt"></i>Logout</button>
+                                class="fas fa-sign-out-alt"></i> लॉग आउट </button>
                     </form>
                 </li>
                 {% else %}
 
                 <li class="nav-item">
                     <a href="{% url 'login' %}" class="nav-link nav-link-big"><i class="fas fa-sign-in-alt"></i>
-                        Login</a>
+                        लॉग इन </a>
                 </li>
                 <li class="nav-item">
                     <a href="{% url 'register' %}" class="nav-link nav-link-big"><i class="fas fa-user-plus"></i>
-                        Register</a>
+                        रजिस्टर </a>
                 </li>
                 {% endif %}
             </ul>

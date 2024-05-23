@@ -72,25 +72,14 @@
     </div>
 </div>
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
 
-            <div class="btn-group col-12" role="group">
-                <button type="button" class="btn btn-custom-outline" onclick="showPosts('approved')">स्वीकृत
-                    ({{ total_approved_posts }})</button>
-               
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="row justify-content-center" id="approved-posts">
                 <div class="col-md-12">
-                    <h2>स्वीकृत पोस्ट</h2>
+                    <h2>पोस्ट</h2>
                     {% if total_approved_posts == 0 %}
                     <p>कोई स्वीकृत पोस्ट नहीं.</p>
                     {% else %}

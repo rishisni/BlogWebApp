@@ -12,6 +12,7 @@
                                 <h2 class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Register</h2>
                                 <form method="post" action="{% url 'register' %}" class="mx-1 mx-md-4">
                                     {% csrf_token %}
+                                   
                                     <div class="d-flex flex-row align-items-center mb-4">
                                         <i class="fa fa-user fa-lg me-3 fa-fw"></i>
                                         <div class="form-outline flex-fill mb-0">
@@ -55,15 +56,18 @@
                                     <p class="text-center fw-bold mb-5 mx-1 mx-md-4 mt-4">Already have an account? <a href="{% url 'login' %}" style="text-decoration: none;">Login here</a></p>
                                 </div>
                                 <div class="text-center mb-3">
-                                    <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-custom-outline">
+                                    <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-light">
                                         <i class="fab fa-google mr-2"></i> Register With Google
                                     </a>
                                 </div>
                                 <div class="text-center mb-3">
-                                    <a href="{% url 'social:begin' 'facebook' %}" class="btn btn-custom-outline">
+                                    <a href="{% url 'social:begin' 'facebook' %}"  class="btn btn-primary">
                                         <i class="fab fa-facebook mr-2"></i> Register With Facebook
+                                       
+                                        
                                     </a>
                                 </div>
+                                
                             </div>
                             <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
                                 <img src="/static/images/thesoultalk.png" class="img-fluid" alt="Sample image">

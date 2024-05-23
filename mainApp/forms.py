@@ -67,20 +67,25 @@ class CommentForm(forms.ModelForm):
 
 
 
-# forms.py
-from django import forms
-from .models import CompetitionEntry, Category
 
 class CompetitionEntryForm(forms.ModelForm):
-    category = forms.ModelChoiceField(queryset=Category.objects.all(), empty_label=None)
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['category'].label_from_instance = lambda obj: obj.name_hi  # Display name_hi in the form
+    category = forms.ModelChoiceField(
+        queryset=Category.objects.all(), 
+        empty_label=None,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
 
     class Meta:
         model = CompetitionEntry
-        fields = ['category', 'post_title', 'post_description']
+        fields = ['post_title', 'post_description', 'category']
+        widgets = {
+            'post_title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter post title'}),
+            'post_description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter post description'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(CompetitionEntryForm, self).__init__(*args, **kwargs)
+        self.fields['category'].choices = [(category.id, category.name_hi) for category in Category.objects.all()]
 
 class CompetitionForm(forms.ModelForm):
     class Meta:
@@ -97,3 +102,9 @@ class CarouselItemForm(forms.ModelForm):
     class Meta:
         model = CarouselItem
         fields = ['image', 'url']
+        
+        
+        
+class PostSearchForm(forms.Form):
+    query = forms.CharField(label='Search', max_length=100, required=False)
+        
