@@ -13,12 +13,12 @@
                             alt="Profile Image" class="profile-image img-fluid rounded-circle">
                             
                         </div>
-                        <p class="card-text mb-0">
+                        <p class="card-text mb-0 post-date">
                             {{ entry.user.username }}
                         </p>
                     <div>
                         
-                        <p class="card-text mb-0">
+                        <p class="card-text mb-0 post-date">
                             {{ entry.created_at|date:"d F, Y" }}
                         </p>
                     </div>
@@ -26,15 +26,15 @@
 
                 <!-- Post Title -->
                 <div>
-                    <h5 class="card-title">
-                        <strong>{{ entry.post_title }}</strong>
+                    <h5 class="card-title"  style="color: brown;">
+                       {{ entry.post_title }}
                     </h5>
                 </div>
 
                 <!-- Post Description -->
                 <div>
-                    <p class="card-text text-center">
-                        <pre class="card-text text-center">{{ entry.post_description }}</pre>
+                    <p class="card-text text-center" style="white-space: pre-wrap;">
+                        {{ entry.post_description }}
                     </p>
                 </div>
 

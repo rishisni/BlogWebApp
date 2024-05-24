@@ -7,7 +7,7 @@
         <div class="col-md-6">
             <div class="card custom-card shadow mb-3">
                 <div class="card-body">
-                    <h5 class="card-title">{{ user.username }}</h5>
+                    <h5 class="card-title"><a href="{% url 'profile' username=user.username %}" class="profile-link">{{ user.username }}</a></h5>
                     <p class="card-text">Email: {{ user.email }}</p>
                     <p class="card-text">Name: {{ user.get_full_name }}</p>
                     <p class="card-text">Phone Number: {{ user.phone_no }}</p>

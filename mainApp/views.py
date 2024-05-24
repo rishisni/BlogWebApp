@@ -16,7 +16,7 @@ from myproject import settings
 from django.http import HttpResponseBadRequest,HttpResponseForbidden
 from django.utils.html import strip_tags
 import uuid
-from django.db.models import Count 
+from django.db.models import Count ,Q
 from datetime import datetime
 import os
 from django.contrib.auth import update_session_auth_hash
@@ -33,7 +33,9 @@ def index(request):
     like_counts = [post.likes_count for post in all_posts]
     top_liked_posts = Post.objects.filter(approved=True).annotate(like_count=Count('likes')).order_by('-like_count')[:3]
     latest_posts = Post.objects.filter(approved=True).order_by('-created_at')[:3]
-    categories = Category.objects.annotate(post_count=Count('post'))
+    categories = Category.objects.annotate(
+        post_count=Count('post', filter=Q(post__approved=True))
+    )
     submitted_entries = CompetitionEntry.objects.all()
     
     total_category_posts = Post.objects.filter(approved=True).count()
@@ -331,9 +333,11 @@ def create_category(request):
 
 @login_required
 def category_list(request):
-    categories = Category.objects.annotate(post_count=Count('post'))
+    categories = Category.objects.annotate(
+        post_count=Count('post', filter=Q(post__approved=True))
+    )
     
-    total_category_posts = Post.objects.count()
+    total_category_posts = Post.objects.filter(approved=True).count()
     
     return render(request, 'category_list.html', {'categories': categories, 'total_category_posts': total_category_posts})
 
@@ -586,7 +590,7 @@ def follow_user(request, username):
             messages.info(request, f"You are already following {followee.username}.")
         else:
             messages.success(request, f"You are now following {followee.username}.")
-    return redirect('view_user_profile', username=username)
+    return redirect('profile', username=username)
 
 
 # ----------------------------------------------------------- Unfollow User ----------------------------------------------------------------------
@@ -601,7 +605,7 @@ def unfollow_user(request, username):
             messages.success(request, f"You have unfollowed {followee.username}.")
         except Follow.DoesNotExist:
             messages.error(request, f"You are not following {followee.username}.")
-    return redirect('view_user_profile', username=username)
+    return redirect('profile', username=username)
 
 # -----------------------------------------------------------All User List  ----------------------------------------------------------------------
 
@@ -847,37 +851,6 @@ def delete_user(request, user_id):
     return redirect('user_list')
 
 
-
-# Add a new view function to display other users' profiles
-# def view_user_profile(request, username):
-#     user = get_object_or_404(CustomUser, username=username)
-#     user_posts = Post.objects.filter(created_by=user)
-    
-#     approved_posts = user_posts.filter(approved=True)
-    
-
-#     user_submitted_entries = CompetitionEntry.objects.filter(user=user)
-
-#     total_approved_posts = approved_posts.count()
-    
-#     total_user_submitted_entries = user_submitted_entries.count()
-#     total_posts = total_approved_posts + total_user_submitted_entries
-    
-#     profile = Profile.objects.filter(user=user).first()
-#     profile_user = CustomUser.objects.get(username=username)
-#     is_following = request.user.is_authenticated and profile_user.followers.filter(follower=request.user).exists()
-#     return render(request, 'view_user_profile.html', {
-#         'viewed_user': user,
-#         'profile': profile,
-#         'approved_posts': approved_posts,
-        
-#         'total_posts': total_posts,
-#         'total_approved_posts': total_approved_posts,
-        
-#         'user_submitted_entries': user_submitted_entries,
-#         'total_user_submitted_entries': total_user_submitted_entries,
-#         'profile_user': profile_user, 'is_following': is_following
-#     })
 
 
 def post_search(request):

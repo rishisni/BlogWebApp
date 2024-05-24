@@ -24,25 +24,18 @@
                             class="fas fa-trophy"></i>काव्य प्रविष्टियां</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link nav-link-big" href="#"> 
+                    <a class="nav-link nav-link-big" target="_blank" href="https://allevents.in/org/the-soultalk/20935146"> 
                         <i class="fas fa-calendar-day"></i>आगामी कार्यक्रम</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link nav-link-big" href="https://thequotestore.in/"> 
+                    <a class="nav-link nav-link-big" target="_blank" href="https://thequotestore.in/"> 
                         <i class="fas fa-book"></i> किताबें और मर्चेंडाइज</a>
                 </li>
 
                 {% if user.is_authenticated %}
 
                 {% if user.is_admin or user.is_owner %}
-                <li class="nav-item">
-                    <a class="nav-link nav-link-big" href="{% url 'create-category' %}"> <i
-                            class="fas fa-plus-circle"></i> श्रेणी बनाएं</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link nav-link-big" href="{% url 'add_competition' %}"> <i
-                            class="fas fa-plus-circle"></i>प्रविष्टियां जोड़ें</a>
-                </li>
+               
                 <li class="nav-item">
                     <a class="nav-link nav-link-big" href="{% url 'actions' %}"> <i
                             class="fas fa-user-shield"></i>Actions</a>

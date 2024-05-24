@@ -5,21 +5,24 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <img src="{{ competition.image.url }}" class="img-fluid py-4 mb-4" alt="Competition Image">
-            <h1 class="text-center">{{ competition.title }}</h1>
+            <h2 class="text-center">{{ competition.title }}</h2>
             <div class="poetry-content">
                 <pre>
-                    <p  class="card-text  ">{{ competition.description }}</p>
-
+                    <p class="card-text">{{ competition.description }}</p>
                 </pre>
             </div>
-            <p><strong>Start Date:</strong> {{ competition.start_date }}</p>
-            <p><strong>End Date:</strong> {{ competition.end_date }}</p>
-            <h3>नियम </h3>
-
+            <div class="row justify-content-start">
+                <div class="col-md-6">
+                    <p class="post-date"><strong>Start Date:</strong> {{ competition.start_date }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="post-date"><strong>End Date:</strong> {{ competition.end_date }}</p>
+                </div>
+            </div>
+            <h5 class="card-title" style="color: brown;">नियम</h5>
             <div class="poetry-content">
                 <pre>
-                    <p class="card-text  ">{{ competition.rules }}</p>
-
+                    <p class="card-text">{{ competition.rules }}</p>
                 </pre>
             </div>
             <a class="btn-custom-outline btn-lg btn-block" href="{% url 'submit_entry' competition_id=competition.id %}">भाग लें</a>

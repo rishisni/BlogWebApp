@@ -2,14 +2,14 @@
     <img src="{{ competition.image.url }}" class="card-img-top img-fluid" alt="{{ competition.title }}"
         style="max-height: 200px;">
     <div class="card-body">
-        <h5 class="card-title">{{ competition.title }}</h5>
-        <p class="card-text">{{ competition.description|truncatechars:60 }}</p>
-        <div class="row">
+        <h5 class="card-title"  style="color: brown;">{{ competition.title }}</h5>
+        <p class="card-text post-date">{{ competition.description|truncatechars:60 }}</p>
+        <div class="row justify-content-start">
             <div class="col">
-                <p class="card-text"><strong>Start Date:</strong> {{ competition.start_date }}</p>
+                <p class="card-text post-date"><strong>Start Date:</strong> {{ competition.start_date }}</p>
             </div>
             <div class="col">
-                <p class="card-text"><strong>End Date:</strong> {{ competition.end_date }}</p>
+                <p class="card-text post-date"><strong>End Date:</strong> {{ competition.end_date }}</p>
             </div>
         </div>
         <div class="row mt-4 mt-sm-0 mb-4 mt-2">

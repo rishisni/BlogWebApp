@@ -26,16 +26,16 @@
                                     <p class="card-text"><i class="fas fa-pen"></i> {{ profile.bio }}</p>
                                      <div class="d-flex justify-content-start rounded-3 p-2 mb-2 bg-body-tertiary">
                                         <div>
-                                            <p class="small text-muted mb-1">Posts</p>
+                                            <p class="small text-muted mb-1">पोस्ट</p>
                                             <p class="mb-0">{{ total_posts }}</p>
                                         </div>
                                         <div class="px-3">
-                                            <p class="small text-muted mb-1">Followers</p>
-                                            <p class="mb-0">{{ profile.user.followers_count }}</p>
+                                            <p class="small text-muted mb-1">फॉलोअर्स </p>
+                                            <p class="mb-0">{{ profile_user.followers_count }}</p>
                                         </div>
                                         <div>
-                                            <p class="small text-muted mb-1">Following</p>
-                                            <p class="mb-0">{{ profile.user.following_count }}</p>
+                                            <p class="small text-muted mb-1">फॉलोइंग</p>
+                                            <p class="mb-0">{{ profile_user.following_count }}</p>
                                         </div>
                                     </div>
                                 </div>

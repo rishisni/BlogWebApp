@@ -107,4 +107,3 @@ class CarouselItemForm(forms.ModelForm):
         
 class PostSearchForm(forms.Form):
     query = forms.CharField(label='Search', max_length=100, required=False)
-        

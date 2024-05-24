@@ -3,22 +3,22 @@
 {% block content %}
     <h2>नई प्रविष्टियां</h2>
     {% if new_competitions %}
-        
+
             {% for competition in new_competitions %}
                 {% include 'partials/competition_card.html' %}
             {% endfor %}
-        
+
     {% else %}
         <p>कोई नई प्रविष्टियां नहीं हैं।</p>
     {% endif %}
 
     {% for competition in old_competitions %}
+      <div>
+                <hr style= "background-color:  #0d1e80 ;">
+            </div>
     <h2>पुरानी प्रविष्टियां</h2>
-   
-       
-            
+
                 {% include 'partials/competition_card.html' %}
-            
-        
+
         {% endfor %}
 {% endblock %}
