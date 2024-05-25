@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<div id="carouselExample" class="carousel slide" data-ride="carousel" data-interval="8000">
+<div id="carouselExample" class="carousel slide" data-ride="carousel" data-interval="3000">
     <div class="carousel-inner">
         {% for item in carousel_items %}
         <div class="carousel-item {% if forloop.first %}active{% endif %}">
@@ -64,6 +64,10 @@
                 <ul class="list-unstyled">
 
                     <h2>सर्वाधिक प्रचलित रचना</h3>
+                        <div>
+                            <hr style= "background-color:  #0d1e80 ;">
+                        </div>
+        
                         <li class="mb-4">
                             {% if top_liked_posts %}
                             {% for post in top_liked_posts %}
@@ -88,6 +92,10 @@
                 <ul class="list-unstyled">
 
                     <h2 class="attractive-heading">नवीनतम रचनाएँ</h2>
+                    <div>
+                        <hr style= "background-color:  #0d1e80 ;">
+                    </div>
+    
                     {% if latest_posts %}
 
                     {% for post in latest_posts %}
@@ -135,6 +143,10 @@
             </div>
             <ul class="list-unstyled">
                 <h2> रचनाएँ</h2>
+                <div>
+                    <hr style= "background-color:  #0d1e80 ;">
+                </div>
+
                 {% if all_posts %}
                 {% for post in all_posts %}
 
